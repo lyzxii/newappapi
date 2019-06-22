@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.caiyi.lottery.tradesystem.integralcenter.dao.IntegralCenterQueryDao">
+    <resultMap id="BaseResultMap" type="integral.bean.IntegralBean">
+        <result column="igradeid" property="currentLevel"/>
+        <result column="ipoint" property="currentPoint"/>
+        <result column="cuserphoto" property="userPhoto"/>
+        <result column="isigned" property="signed"/>
+        <result column="istatus" property="status"/>
+        <result column="differ" property="differ"/>
+
+        <result column="iexperience" property="currentExp"/>
+        <result column="ineedexper" property="nextLevelExp"/>
+        <result column="cgradename" property="levelName"/>
+
+    </resultMap>
+
+    <select id="queryBasicInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select t2.igradeid,t2.cuserphoto,t3.ipoint
+        from tb_user_grade t1,tb_user t2 ,tb_user_acct t3
+        where t1.igradeid = t2.igradeid and t2.cnickid = t3.cnickid and t2.cnickid = #{uid}
+    </select>
+
+    <select id="hasSignRecord" resultType="int" parameterType="java.lang.String">
+        select count(1) from tb_user_signed where cnickid = #{uid}
+    </select>
+
+    <select id="isContinuous" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select (to_date(to_char(sysdate,'YYYY/MM/dd'),'YYYY/MM/dd') - finaldate) differ,isigned,istatus from tb_user_signed where cnickid = #{uid}
+    </select>
+
+    <update id="clearSignDays" parameterType="java.lang.String">
+       update tb_user_signed set isigned = '0' ,istatus = '0' where cnickid = #{uid}
+    </update>
+
+    <update id="clearSignStatus" parameterType="java.lang.String">
+        update tb_user_signed set istatus = '0' where cnickid = #{uid}
+    </update>
+
+
+    <select id="getSignInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select isigned,istatus from tb_user_signed where cnickid = #{uid}
+    </select>
+
+    <select id="queryDayPoints" resultType="java.lang.String" parameterType="java.lang.String">
+        select nvl(sum(ipoint),0) total from tb_point_charge where cnickid = #{uid} and itype = '0' and  to_date(to_char(cadddate,'yyyy/MM/dd'),'yyyy/MM/dd') = to_date(to_char(sysdate,'yyyy/MM/dd'),'yyyy/MM/dd')
+    </select>
+
+    <select id="isBindIcCard" resultType="int" parameterType="java.lang.String">
+        select count(cidcard) from tb_user where cnickid = #{uid}
+    </select>
+
+    <select id="isBindBankCard" resultType="int" parameterType="java.lang.String">
+        select count(cbankcard) from tb_user where cnickid = #{uid}
+    </select>
+
+    <select id="queryIsGetPoints" resultType="java.lang.String" parameterType="java.lang.String">
+        select itaskinit from tb_user where cnickid = #{uid}
+    </select>
+
+    <select id="cannotSign" resultType="java.lang.String" parameterType="java.lang.String">
+        select nvl(sum(idaigou+ihemai+izhuihao),0) total from tb_user_acct where cnickid = #{uid}
+    </select>
+
+    <insert id="insertUserToSign" parameterType="java.lang.String">
+        insert into tb_user_signed(cnickid,finaldate,isigned,istatus) values (#{uid},to_date(#{date},'yyyy/MM/dd'),#{isigned},#{istatus})
+    </insert>
+
+    <update id="clickToSign" parameterType="integral.bean.IntegralParamBean">
+        update tb_user_signed set isigned = (isigned + 1),finaldate = to_date(#{date,jdbcType=VARCHAR},'YYYY/MM/dd'),istatus = '1' where cnickid = #{uid,jdbcType=VARCHAR} and istatus = '0' and isigned = #{hasSignDays,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insertPointCharge" parameterType="integral.bean.IntegralParamBean">
+        insert into tb_point_charge (ipointid,cnickid,ipoint,itype,cmemo,cadddate,ibiztype,ioldpoint,ibalance,isource,igradeid)values(SEQ_POINT_CHARGE.NEXTVAL,#{uid,jdbcType=VARCHAR},#{point,jdbcType=VARCHAR},'0',#{type,jdbcType=VARCHAR},sysdate,#{biztype,jdbcType=VARCHAR},#{memBasicVal,jdbcType=VARCHAR},#{total,jdbcType=VARCHAR},'0',#{userLevel,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateUserPoint" parameterType="integral.bean.IntegralParamBean">
+        update tb_user_acct set ipoint = ipoint + #{point} where cnickid = #{uid}
+    </update>
+
+    <update id="clickToGetPoints" parameterType="java.lang.String">
+        update tb_user set itaskinit = #{itask,jdbcType=INTEGER} where cnickid = #{uid} and bitand(#{task},#{bitand}) = #{bitand}
+    </update>
+
+    <select id="queryVipUserInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select t2.igradeid,t2.cuserphoto,t3.iexperience,t1.cgradename,t1.ineedexper
+        from tb_user_grade t1,tb_user t2 ,tb_user_acct t3
+        where t1.igradeid = t2.igradeid and t2.cnickid = t3.cnickid and t2.cnickid = #{uid}
+    </select>
+
+    <select id="getNextLevel" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select ineedexper from tb_user_grade where igradeid = #{level}
+    </select>
+
+    <select id="experienceDetail" resultMap="pageResult" parameterType="java.lang.String">
+        select cadddate,ibiztype,iexper,itype from tb_experience_charge where  cadddate > sysdate - 60 and cadddate > to_date('2017/07/15','yyyy/MM/dd') and cnickid = #{uid} order by cadddate desc
+    </select>
+
+    <select id="pointsDetail" resultMap="pageResult" parameterType="java.lang.String">
+        select cadddate,
+		       decode(ibiztype,'261','注册',
+		                       '262','验证手机',
+		                       '263','首次绑定身份证',
+		                       '264','首次充值',
+		                       '265','每日签到',
+		                       '266','购彩',
+		                       '267','彩票中奖',
+		                       '268','升级',
+		                       '269','红包兑换',
+		                       '210','首次绑定银行卡',
+		                       '211','连签七天',
+		                       '212','抽奖中奖',
+		                       '109','兑换物品',
+		                       '110','抽奖',
+		                       '111','积分过期') ibiztype,
+		       ipoint iexper,
+		       itype
+		       from tb_point_charge
+		       where  cadddate > sysdate - 60 and cnickid = #{uid} order by cadddate desc
+    </select>
+
+    <resultMap id="pageResult" type="integral.bean.IntegralPageBean">
+        <result column="cadddate" property="adddate"/>
+        <result column="ibiztype" property="desc"/>
+        <result column="iexper" property="balance"/>
+        <result column="itype" property="itype"/>
+
+    </resultMap>
+</mapper>

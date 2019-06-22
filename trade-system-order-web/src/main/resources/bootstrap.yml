@@ -1,0 +1,45 @@
+eureka:
+    client:
+        serviceUrl:
+            #服务注册中心地址
+            defaultZone: http://server1:8101/eureka/,http://server2:8101/eureka/
+    # 指定此实例的ip
+    instance:
+# 注册时使用ip而不是主机名
+        prefer-ip-address: true
+        instance-id: order-web:${spring.cloud.client.ipAddress}:${server.port}
+spring:
+    application:
+        #对应{application}部分
+        name: trade-system 
+    cloud:
+        config:
+            discovery:
+                #参数设置为 true，开启通过服务来访问 Spring Cloud Config Server 的功能
+                enabled: true  
+                #指定配置中心的服务名,便于扩展为高可用配置集群 
+                serviceId: spring-cloud-config
+            #对应{profile}部分  
+            profile: order-web
+    jackson:
+        default-property-inclusion: non_null
+    #暂无需将session放入redis,临时置为none，防启动报错
+#    session:
+#        store-type: none
+#ribbon配置
+#ribbon:
+    #请求连接超时时间
+#    ConnectTimeout: 6000
+    #请求处理的超时时间
+#    ReadTimeout: 6000
+    #切换实例的重试次数
+#    MaxAutoRetries: 0
+    #对当前实例的重试次数
+#    MaxAutoRetriesNextServer: 1
+
+---
+eureka:
+    client.serviceUrl.defaultZone: http://192.168.1.121:8101/eureka/,http://192.168.1.121:8102/eureka/,http://192.168.1.122:8103/eureka/
+spring:
+    profiles: test
+

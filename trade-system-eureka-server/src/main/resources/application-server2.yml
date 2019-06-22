@@ -1,0 +1,30 @@
+#trade-system-eureka-server 模块配置文件
+
+#应用名称
+spring:
+    application:
+        name: spring-cloud-eureka
+#端口
+server:
+    port: 8101
+
+#安全认证配置
+security:
+    basic:
+        enabled: true
+    user:
+        name: admin
+        password: admin123
+
+eureka:
+    instance:
+        hostname: server2
+    client:
+        register-with-eureka: true
+        fetch-registry: true
+        serviceUrl:
+            defaultZone: http://${security.user.name}:${security.user.password}@server1:8101/eureka/
+        eureka-server-total-connections: 1000
+        eureka-server-total-connections-per-host: 200      
+    server:
+        enable-self-preservation: false

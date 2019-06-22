@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.usercenter.dao.UserMapper">
+
+    <select id="countWithInNickIdAndAgentId" resultType="int">
+        select count(1) from tb_user where cnickid=#{nickid} and cagentid IN
+        <foreach collection="agentids" item="agentid" separator="," open="(" close=")">
+            #{agentid}
+        </foreach>
+    </select>
+
+    <select id="getMobileNoByNickIdAndAgentId" resultType="java.lang.String">
+        select CMOBILENO from tb_user where cnickid=#{nickid} and imobbind=1 and cagentid in
+        <foreach collection="agentids" item="agentid" separator="," open="(" close=")">
+            #{agentid}
+        </foreach>
+    </select>
+
+    <select id="selectPwdFlag" resultType="java.lang.String">
+        select cpwdflag from tb_user where cnickid = #{uid}
+    </select>
+
+    	<update id="setNickidModifyAs0" >
+		update tb_user set imodifynickid=0 where
+		<choose>
+			<when test="mobileNo != null and mobileNo != ''">
+				 cmobileno=#{mobileNo} and ilgphone=1
+			</when>			
+			<otherwise>
+				cnickid=#{nickId}
+			</otherwise>
+		</choose>
+	</update>
+	
+    <select id="queryIdBankBinding" resultType="pojo.UserPojo">
+        select decode(cidcard,null,'',substr(cidcard,1,4) ||'*********'|| substr(cidcard,length(cidcard)-3,4)) idcard,
+        decode(cmobileno,null,'',substr(cmobileno,1,3) || '****' || substr(cmobileno,length(cmobileno)-3,4)) mobileNo,
+        decode(crealname,null,'','*' || substr(crealname,2)) realName,
+        imobbind mobbindFlag,
+        decode(cbankcard,null,'',cbankcard) bankCard,
+        decode(cbankname,null,'',cbankname) bankName,
+        cbankcode bankCode,
+        cbankname name,
+        cbankpro bankProvince,
+        cbankcity bankCity,
+        ilgphone loginPhone,
+        decode(ccardmobile,null,'',ccardmobile) cardMobile,
+        itaskinit taskInit
+        from tb_user
+        where cnickid =  #{nickid}
+    </select>
+    
+    <update id="updateUserDrawBankCard" parameterType="bean.UserBean">
+    	update tb_user 
+    	<trim prefix="set" suffixOverrides=",">
+    		cbankcode = #{drawBankCode},
+    		cbankcard = #{bankCard},
+    		cbankcardmd5 = #{md5BankCard},
+    		cbankpro = #{provid},
+    		cbankcity = #{cityid},
+    		cbankname = #{bankName},
+    		<if test="mobileNo!=null">
+    			ccardmobile = #{mobileNo},
+    		</if>
+    		<if test="md5Mobile!=null">
+    			ccardmobilemd5 = #{md5Mobile},
+    		</if>
+    	</trim>
+    	where cnickid = #{uid} and cbankcard is null
+    </update>
+</mapper>

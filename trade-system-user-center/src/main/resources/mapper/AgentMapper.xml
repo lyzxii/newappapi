@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.usercenter.dao.AgentMapper">
+
+    <select id="queryAgentLevel" resultType="pojo.AgentPojo">
+		select	nvl((select level+1 from tb_agent where cparentid='vip' connect by cagentid=prior cparentid start with cagentid= a.cagentid),-1) agentLevel,
+			    nvl((select count(1) from tb_agent where cagentid=a.cagentid and cnickid=a.cnickid),0) agentFlag 
+		  from	tb_agent a 
+		 where  a.cagentid = #{arg0} and 
+		        a.cnickid = #{arg1}
+    </select>
+</mapper>

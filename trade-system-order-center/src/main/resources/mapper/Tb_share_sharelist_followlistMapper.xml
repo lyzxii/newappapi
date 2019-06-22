@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.ordercenter.dao.Tb_share_sharelist_followlistMapper">
+
+    <select id="queryShareUserData" resultType="order.pojo.ShareGodUserPojo">
+
+        SELECT * FROM (
+        SELECT t.cnickid AS nickid,
+        t.iprojallnum AS projallnum,
+        t.iprojrednum AS projrednum,
+        t.cshootrate AS shootrate,
+        t.ibuymonry AS buymonry,
+        t.iwinmoney AS winmoney,
+        t.creturnrate AS returnrate,
+        <choose>
+            <when test="flag==1 or flag==2 or flag==9 or flag==11 or flag==12 or flag==19 or flag==20">
+                t.ifollowusers AS followusers,
+                t.ifollowmoney AS followmoney,
+                t.icontinurednum AS continurednum,
+            </when>
+            <otherwise>
+                0 AS followusers,
+                0 AS followmoney,
+                0 AS continurednum,
+            </otherwise>
+        </choose>
+
+        nvl(p.countnum, 0) AS unfinishnum
+        FROM
+        <choose>
+            <when test="flag==4 or flag==5 or flag==6 or flag==7 or flag==8 or flag==14 or flag==15 or flag==16 or flag==17 or flag==18">
+                tb_share_user_detail t
+            </when>
+            <otherwise>
+                tb_share_user_stat t
+            </otherwise>
+        </choose>
+
+        LEFT JOIN (
+        SELECT cnickid,
+        COUNT(1) AS countnum
+        FROM tb_sharelist a
+        WHERE a.ifinish = 0
+        AND a.cendtime &gt; SYSDATE + 5 / 24 / 60
+        AND (
+        SELECT nvl(SUM(itmoney), 0) AS tmoney
+        FROM tb_followlist
+        WHERE cshareprojid = a.cprojid
+        ) &lt; 10 * a.itmoney
+        GROUP BY a.cnickid
+        ) p ON p.cnickid = t.cnickid
+        WHERE t.cstatday = #{stime}
+        <choose>
+            <when test="flag==1 or flag==2 or flag==5 or flag==8 or flag==9 or flag==11 or flag==12 or flag==18 or flag==19">
+                AND t.cstattype = '30'
+                <if test="flag==8 or flag==18">
+                    AND t.iprojallnum >= 20
+                    AND to_number(substr(t.cshootrate, 0, length(t.cshootrate) - 1)) >= 35
+                </if>
+                <if test="flag==9 or flag==19">
+                    AND t.icontinurednum >= 2
+                </if>
+                <if test="flag==5">
+                    AND t.iprojallnum >= 20
+                    AND to_number(substr(t.creturnrate, 0, length(t.creturnrate) - 1)) >= 120
+                </if>
+
+            </when>
+            <when test="flag==3 or flag==6 or flag==13 or flag==16">
+                AND t.cstattype = '7'
+                AND t.iprojallnum &gt;= 4
+                <if test="flag==3 or flag==13">
+                    AND to_number(substr(t.creturnrate, 0, length(t.creturnrate) - 1)) &gt;= 150
+                </if>
+                <if test="flag==6 or flag==16">
+                    AND to_number(substr(t.cshootrate, 0, length(t.cshootrate) - 1)) >= 50
+                </if>
+            </when>
+            <when test="flag==4 or flag==7 or flag==14 or flag==17">
+                AND t.cstattype = '15'
+                AND t.iprojallnum >= 11
+                <if test="flag==4 or flag==14">
+                    AND to_number(substr(t.creturnrate, 0, length(t.creturnrate) - 1)) >= 135
+                </if>
+                <if test="flag==7 or flag==17">
+                    AND to_number(substr(t.cshootrate, 0, length(t.cshootrate) - 1)) >= 40
+                </if>
+            </when>
+            <when test="flag==10 or flag==20">
+                AND t.cstattype = '3'
+                AND t.iwinmoney > t.ibuymonry
+            </when>
+            <when test="flag==15">
+                AND t.iprojallnum >= 20
+                AND t.cstattype = '30'
+                AND to_number(substr(t.creturnrate, 0, length(t.creturnrate) - 1)) >= 120
+            </when>
+        </choose>
+        ORDER BY
+        <choose>
+            <when test="flag==1 or flag==10 or flag==11 or flag==20">
+                t.iwinmoney DESC,
+                <if test="flag==1 or flag==11">
+                    t.ifollowusers DESC,
+                </if>
+            </when>
+            <when test="flag==2 or flag==11 or flag==12">
+                t.ifollowusers DESC,
+                <if test="flag==2 or flag==12">
+                    t.ifollowmoney DESC,
+                    t.iwinmoney DESC,
+                </if>
+            </when>
+        </choose>
+
+        <if test="flag==9 or flag==19">
+            t.icontinurednum DESC,
+            t.iwinmoney DESC,
+            t.ifollowusers DESC,
+        </if>
+
+        <if test="flag==1 or flag==2 or flag==6 or flag==7 or flag==8 or flag==9 or flag==10 or flag==11 or flag==12 or flag==16 or flag==17 or flag==18 or flag==19 or flag==20">
+            to_number(substr(t.cshootrate, 0, length(t.cshootrate) - 1)) DESC,
+            <if test="flag==6 or flag==7 or flag==8 or flag==16 or flag==17 or flag==18">
+                t.iprojallnum DESC,
+                t.iwinmoney DESC,
+            </if>
+            to_number(substr(t.creturnrate, 0, length(t.creturnrate) - 1)) DESC
+        </if>
+        <if test="flag==3 or flag==4 or flag==5 or flag==13 or flag==14 or flag==15">
+            to_number(substr(t.creturnrate, 0, length(t.creturnrate) - 1)) DESC,
+            t.iwinmoney DESC,
+            to_number(substr(t.cshootrate, 0, length(t.cshootrate) - 1)) DESC
+        </if>
+        )
+        WHERE rownum &lt;= 50
+
+
+        <!--<![CDATA[]]>-->
+    </select>
+
+</mapper>

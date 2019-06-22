@@ -1,0 +1,59 @@
+#trade-system-order-center 模块配置文件
+
+spring:
+    http:
+      encoding:
+        charset: UTF-8
+        enabled: true
+    application:
+        #应用名称
+        name: tradecenter-system-ordercenter-center
+    #数据库连接
+    datasource:
+        url: jdbc:oracle:thin:@//192.168.1.215:1521/lottery
+        username: cpweb
+        password: cpweb
+        driver-class-name: oracle.jdbc.driver.OracleDriver
+        type: com.alibaba.druid.pool.DruidDataSource
+        initialSize: 5    # 初始化连接数
+        minIdle: 5        # 最小空闲连接数
+        maxActive: 50     # 最大活动连接数
+        maxWait: 60000    # 获取连接等待超时的时间，单位毫秒
+        timeBetweenEvictionRunsMillis: 60000  # 间隔60秒进行一次检测，检测需要关闭的空闲连接，单位毫秒
+        minEvictableIdleTimeMillis: 300000    # 池中连接最小生存的时间300秒，单位是毫秒
+        validationQuery: SELECT 2 FROM DUAL   # 检测连接使用的SQL
+        testWhileIdle: true                   # 连接是否被空闲连接回收器进行检验,如果检测失败,则连接将被从池中去除
+        testOnBorrow: false                   # 从池中取出连接前进行检验
+        testOnReturn: false                   # 归还连接到池中前进行检验
+        filters: config
+        connectionProperties: config.decrypt=false
+#端口
+server:
+    port: 9114
+    tomcat:
+        uri-encoding: UTF-8
+
+#feign hystrix 配置
+hystrix:
+    command:
+        default:
+            circuitBreaker:
+                #设置断路器是否起作用。默认为true
+                enabled: true
+                sleepWindowInMilliseconds: 500 #短路多久以后开始尝试是否恢复
+            execution:
+                timeout:
+                    #是否有超时限制。默认为true
+                    enabled: true
+                isolation:
+                    thread:
+                        timeoutInMilliseconds: 10000  #命令执行超时时间，默认1000ms
+ribbon:
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 0
+    OkToRetryOnAllOperations: false
+    ReadTimeout: 10000
+
+feign:
+  hystrix:
+    enabled: true

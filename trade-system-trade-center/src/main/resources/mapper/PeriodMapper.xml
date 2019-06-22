@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.tradecenter.dao.PeriodMapper">
+	<select id="queryNomarlEndState" resultType="trade.pojo.PeriodPojo">
+		select cfendtime + ${arg0} fendtime, isalestate salestate 
+		  from tb_period 
+		 where cgameid = #{arg1} and cperiodid = #{arg2}
+    </select>
+ 
+</mapper>

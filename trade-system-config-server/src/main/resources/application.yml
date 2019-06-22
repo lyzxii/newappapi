@@ -1,0 +1,21 @@
+eureka:
+    client:
+        serviceUrl:
+            #服务注册中心地址
+            defaultZone: http://192.168.1.121:8101/eureka/,http://192.168.1.121:8102/eureka/,http://192.168.1.122:8103/eureka/
+spring:
+    application:
+        #应用名称
+        name: spring-cloud-config
+    profiles:
+        #使用本地属性文件
+        active: native
+    cloud:
+        config:
+            server:
+                native:
+                    #属性文件地址，只要指定文件夹的路径
+                    search-locations: classpath:/properties/
+#配置工程监听端口,目前在启动脚本里指定了端口
+#server.port=8201
+

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.usercenter.dao.UserPayMapper">
+
+    <resultMap id="BaseResultMap" type="pojo.UserPayPojo">
+        <id column="IPAYID" jdbcType="INTEGER" property="payId" />
+        <result column="CNICKID" jdbcType="VARCHAR" property="uid" />
+        <result column="CAPPLYID" jdbcType="VARCHAR" property="applyID" />
+        <result column="IMONEY" jdbcType="DOUBLE" property="money" />
+        <result column="CAPPLYINFO" jdbcType="VARCHAR" property="applyInfo" />
+        <result column="CAPPLYDATE" jdbcType="TIMESTAMP" property="applyTime" />
+        <result column="ISTATE" jdbcType="INTEGER" property="state" />
+        <result column="CBANKID" jdbcType="VARCHAR" property="bankId" />
+        <result column="IRATE" jdbcType="DOUBLE" property="rate" />
+        <result column="CCONFIRMID" jdbcType="VARCHAR" property="confirmId" />
+        <result column="CCONFDATE" jdbcType="TIMESTAMP" property="confirmTime" />
+        <result column="CCONFINFO" jdbcType="VARCHAR" property="confirmInfo" />
+        <result column="CERRCODE" jdbcType="VARCHAR" property="errorCode" />
+        <result column="CERRDESC" jdbcType="VARCHAR" property="errorDesc" />
+        <result column="CMEMO" jdbcType="VARCHAR" property="memo" />
+        <result column="ISUCCESS" jdbcType="INTEGER" property="success" />
+        <result column="IMINIMONEY" jdbcType="DOUBLE" property="miniMoney" />
+        <result column="CCARDNO" jdbcType="VARCHAR" property="careNo" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ipayid, cnickid, capplyid, imoney, capplydate,
+		istate, cbankid, irate, cconfirmid, cconfdate, cmemo, isuccess
+    </sql>
+
+    <select id="getPayRecordByNickidAndDate" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM tb_user_pay
+        where cnickid = #{uid} and capplydate >= to_date(#{stime},'yyyy-mm-dd') and
+        capplydate &lt;= to_date(#{etime},'yyyy-mm-dd')+1 and isuccess = 1
+        <if test="bankId != null">
+            and cbankid != #{bankId}
+        </if>
+        order by cconfdate desc
+    </select>
+
+</mapper>

@@ -1,0 +1,40 @@
+#trade-system-redpacket-web 模块配置文件
+
+#应用名称
+spring:
+    http:
+      encoding:
+        charset: UTF-8
+        enabled: true
+    application:
+        name: tradecenter-system-integralcenter-web
+#端口
+server:
+    port: 9112
+    tomcat:
+        uri-encoding: UTF-8
+
+#feign hystrix 配置
+hystrix:
+    command:
+        default:
+            circuitBreaker:
+                #设置断路器是否起作用。默认为true
+                enabled: true
+                sleepWindowInMilliseconds: 500 #短路多久以后开始尝试是否恢复
+            execution:
+                timeout:
+                    #是否有超时限制。默认为true
+                    enabled: true
+                isolation:
+                    thread:
+                        timeoutInMilliseconds: 10000  #命令执行超时时间，默认1000ms
+ribbon:
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 0
+    OkToRetryOnAllOperations: false
+    ReadTimeout: 10000
+
+feign:
+  hystrix:
+    enabled: true

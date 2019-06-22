@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.caiyi.lottery.tradesystem.integralcenter.dao.RedPacketSenderMapper">
+
+    <select id="sendRedPacket" parameterMap="redpacketBean" statementType="CALLABLE">
+        CALL cpadmin.sp_send_redpacket(?,?,?,?,?,?,?,?,?,?,?,?)
+    </select>
+
+    <parameterMap id="redpacketBean" type="integral.pojo.RedPacket">
+        <parameter property="crpid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="cnickid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="cdeaddate" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="imoney" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="coperator" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="igetType" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="icardid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="cmeomo" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="dispatchtime" jdbcType="VARCHAR" mode="IN"/>
+
+        <parameter property="busiErrCode" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="busiErrDesc" jdbcType="VARCHAR" mode="OUT"/>
+        <parameter property="cupacketid" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+
+
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.usercenter.dao.UserBankbindingMapper">
+    <insert id="insertSupplyAlterInfo" parameterType="bean.UserBean" >
+       insert into tb_user_bankbinding (
+            IID,CNICKID,CREALNAME,CIDCARD,CIDCARDPOSIURL,CIDCARDNEGAURL,CBANKCODE,CBANKCARD,
+            CBANKCARDPOSIURL,CBANKNAME,CSUBBANKNAME,CBANKPRO,CBANKCITY,IAPPLYTERMINAL,CBINDMOBILE,
+            CREALNAMEMD5,CIDCARDMD5,CBANKCARDMD5,CMOBILEMD5
+        )
+       values (CPWEB.SEQ_USER_BANKBINDING.NEXTVAL,#{uid,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR},
+       #{idCardNo,jdbcType=VARCHAR},#{idCardFrontUrl,jdbcType=VARCHAR},#{idCardBackUrl,jdbcType=VARCHAR},
+       #{bankCode,jdbcType=VARCHAR},#{bankCard,jdbcType=VARCHAR},#{bankCardFrontUrl,jdbcType=VARCHAR},
+       #{bankName,jdbcType=VARCHAR},#{subbankName,jdbcType=VARCHAR},#{provid,jdbcType=VARCHAR},
+       #{cityid,jdbcType=VARCHAR},#{flag,jdbcType=INTEGER},#{mobileNo,jdbcType=VARCHAR},
+       #{md5RealName,jdbcType=VARCHAR},#{md5IdCard,jdbcType=VARCHAR},#{md5BankCard,jdbcType=VARCHAR},#{md5Mobile,jdbcType=VARCHAR})
+    </insert>
+</mapper>

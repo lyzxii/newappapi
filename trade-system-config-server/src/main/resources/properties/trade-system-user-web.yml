@@ -1,0 +1,61 @@
+#trade-system-activity-web 模块配置文件
+
+#应用名称
+spring:
+    http:
+      encoding:
+        charset: UTF-8
+        enabled: true
+    application:
+        name: tradecenter-system-usercenter-web
+#端口
+server:
+    port: 9101
+    tomcat:
+        uri-encoding: UTF-8
+
+#feign hystrix 配置
+hystrix:
+    command:
+        default:
+            circuitBreaker:
+                #设置断路器是否起作用。默认为true
+                enabled: true
+                sleepWindowInMilliseconds: 500 #短路多久以后开始尝试是否恢复
+            execution:
+                timeout:
+                    #是否有超时限制。默认为true
+                    enabled: true
+                isolation:
+                    thread:
+                        timeoutInMilliseconds: 10000  #命令执行超时时间，默认1000ms
+ribbon:
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 0
+    OkToRetryOnAllOperations: false
+    ReadTimeout: 10000
+
+feign:
+  hystrix:
+    enabled: true
+
+
+# Redis数据库索引（默认为0）
+redis:
+    database: 0
+    # Redis服务器连接密码（默认为空）
+    #password:
+    # 连接池最大连接数，默认值为8，使用负值表示没有限制
+    poolMaxActive: 1024
+    # 连接池最大阻塞等待时间，单位毫秒，默认值为-1，表示永不超时
+    poolMaxWait: 3000
+    # 连接池中的最大空闲连接，默认值为8
+    poolMaxIdle: 64
+    # 连接池中的最小空闲连接
+    poolMinIdle: 8
+    # 连接超时时间（毫秒）
+    timeout: 3000
+    nodes: 192.168.99.135:6379
+    maxAttempts: 6
+    #是否在从池中取出连接前进行检验,如果检验失败,则从池中去除连接并尝试取出另一个
+    testOnBorrow: true

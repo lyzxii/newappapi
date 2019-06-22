@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.tradecenter.dao.CpgameMapper">
+
+    <!--绑定验证-->
+    <select id="t_proj_cast" parameterMap="projCastMap" statementType="CALLABLE">
+        CALL cpgame.sp_web_proj_cast(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    </select>
+
+    <parameterMap id="projCastMap" type="trade.bean.TradeBean">
+        <parameter property="uid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="pwd" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="gid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="pid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="play" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="codes" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="muli" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="fflag" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="type" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="name" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="desc" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="money" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="tnum" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="bnum" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="pnum" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="oflag" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="wrate" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="comeFrom" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="source" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="endTime" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="zid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="guoguan" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="upay" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="cupacketid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="redpacket_money" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="imoneyrange" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="extendtype" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="iminrange" jdbcType="VARCHAR" mode="IN"/>
+        
+        <parameter property="busiErrCode" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="busiErrDesc" jdbcType="VARCHAR" mode="OUT"/>
+        <parameter property="hid" jdbcType="VARCHAR" mode="OUT"/>
+        <parameter property="balance" jdbcType="VARCHAR" mode="OUT"/>
+        <parameter property="gopaymoney" jdbcType="NUMERIC" mode="OUT"/>
+    </parameterMap>
+
+    <!-- 发起追号 -->
+    <select id="t_cast_zh" parameterMap="castZhMap" statementType="CALLABLE">
+        CALL cpgame.sp_web_zhuihao_cast(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    </select>
+
+    <parameterMap id="castZhMap" type="trade.bean.TradeBean">
+        <parameter property="uid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="pwd" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="gid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="pnum" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="zflag" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="money" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="pid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="codes" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="mulitys" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="source" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="upay" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="desc" jdbcType="VARCHAR" mode="IN"/>
+
+        <parameter property="busiErrCode" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="busiErrDesc" jdbcType="VARCHAR" mode="OUT"/>
+        <parameter property="zid" jdbcType="VARCHAR" mode="OUT"/>
+        <parameter property="balance" jdbcType="VARCHAR" mode="OUT"/>
+        <parameter property="gopaymoney" jdbcType="NUMERIC" mode="OUT"/>
+    </parameterMap>
+
+</mapper>

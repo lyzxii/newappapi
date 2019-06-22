@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.ordercenter.dao.ShareListMapper">
+
+    <select id="queryShareGodProj" resultType="order.pojo.ShareListPojo">
+        <![CDATA[
+
+
+	    SELECT b.cprojid     projid,
+	           b.cnickid     nickid,
+	           b.itmoney     tmoney,
+	           b.imintmoney  mintmoney,
+	           b.iwrate      wrate,
+	           b.cgameid     gameid,
+	           b.cperiodid   period,
+	           b.ccodes      codes,
+	           b.cmatchs     matches,
+	           b.cguoguan    guoguan,
+	           b.iusernums usernum,
+	           b.ibonus      bonus,
+	           b.cendtime    endtime,
+		       b.ifollowmoney followmoney,
+		       b.extendtype extendtype,
+		       round((b.ifollowmoney/(b.itmoney*10)),2)*100||'%' followrate
+	      FROM tb_sharelist b
+	     where b.cnickid = #{newValue}
+	       and b.ifinish = #{qtype}
+	       and b.cendtime >= sysdate - 30
+	       order by b.cadddate desc
+
+
+        ]]>
+    </select>
+
+    <select id="queryShareGodProj_0" resultType="order.pojo.ShareListPojo">
+        <![CDATA[
+
+
+		SELECT b.cprojid      projid,
+		       b.cnickid      nickid,
+		       b.itmoney      tmoney,
+		       b.imintmoney   mintmoney,
+		       b.cgameid      gameid,
+	           b.cperiodid    period,
+		       b.ccodes       codes,
+		       b.iwrate       wrate,
+		       b.cmatchs      matches,
+		       b.cguoguan     guoguan,
+		       b.iusernums    usernum,
+		       b.ibonus       bonus,
+		       b.cendtime     endtime,
+		       b.ifollowmoney followmoney,
+		       b.extendtype extendtype,
+		       round((b.ifollowmoney/(b.itmoney*10)),2)*100||'%' followrate
+		  FROM tb_sharelist b
+		 where b.cnickid = #{newValue}
+		   and b.ifinish = #{qtype}
+		   and b.cendtime >= sysdate - 30
+		   order by round((b.ifollowmoney/(b.itmoney*10)),2)*100 , b.cadddate desc
+
+
+        ]]>
+    </select>
+
+    <select id="query_god_proj_1" resultType="order.pojo.ShareListPojo">
+    <![CDATA[
+
+
+			SELECT b.cprojid     projid,
+			       b.cnickid     nickid,
+			       b.itmoney     tmoney,
+			       b.cgameid     gameid,
+		           b.cperiodid   period,
+		           b.ccodes      codes,
+			       b.imintmoney  mintmoney,
+			       b.iwrate      wrate,
+			       b.cmatchs     matches,
+			       b.cguoguan    guoguan,
+			       b.iusernums usernum,
+			       b.extendtype extendtype,
+			       b.cendtime    endtime
+			  FROM tb_sharelist b
+			 where b.ifinish = 0
+			 and b.cendtime > sysdate + 5/24/60
+	         and b.cvisiable = 1
+	         and  (select nvl(sum(itmoney),0) tmoney from tb_followlist where cshareprojid = b.cprojid) < 10 * b.itmoney
+	        order by  b.itmoney desc,b.iusernums desc,b.imintmoney ,b.iwrate,b.cendtime desc ,b.cnickid
+
+
+        ]]>
+    </select>
+
+    <select id="query_god_proj_2" resultType="order.pojo.ShareListPojo">
+            <![CDATA[
+
+			SELECT b.cprojid     projid,
+			       b.cnickid     nickid,
+			       b.itmoney     tmoney,
+			       b.cgameid     gameid,
+		           b.cperiodid   period,
+		           b.ccodes      codes,
+			       b.imintmoney  mintmoney,
+			       b.iwrate      wrate,
+			       b.cmatchs     matches,
+			       b.cguoguan    guoguan,
+			       b.iusernums usernum,
+			       b.extendtype extendtype,
+			       b.cendtime    endtime
+			  FROM tb_sharelist b
+			 where b.ifinish = 0
+			 and b.cendtime > sysdate + 5/24/60
+	         and b.cvisiable = 1
+	         and  (select nvl(sum(itmoney),0) tmoney from tb_followlist where cshareprojid = b.cprojid) < 10 * b.itmoney
+	         order by b.itmoney,b.iusernums desc,b.imintmoney ,b.iwrate,b.cendtime desc ,b.cnickid
+
+        ]]>
+    </select>
+
+    <select id="query_god_proj_3" resultType="order.pojo.ShareListPojo">
+            <![CDATA[
+
+			SELECT b.cprojid     projid,
+			       b.cnickid     nickid,
+			       b.itmoney     tmoney,
+			       b.cgameid     gameid,
+		           b.cperiodid   period,
+		           b.ccodes      codes,
+			       b.imintmoney  mintmoney,
+			       b.iwrate      wrate,
+			       b.cmatchs     matches,
+			       b.cguoguan    guoguan,
+			       b.iusernums usernum,
+			       b.extendtype extendtype,
+			       b.cendtime    endtime
+			  FROM tb_sharelist b
+			 where b.ifinish = 0
+			 and b.cendtime > sysdate + 5/24/60
+	         and b.cvisiable = 1
+	         and  (select nvl(sum(itmoney),0) tmoney from tb_followlist where cshareprojid = b.cprojid) < 10 * b.itmoney
+	         order by b.yhmoney desc,b.iusernums desc,b.itmoney desc,b.iwrate,b.cendtime desc ,b.cnickid
+
+        ]]>
+    </select>
+
+    <select id="query_god_proj_4" resultType="order.pojo.ShareListPojo">
+            <![CDATA[
+
+			SELECT b.cprojid     projid,
+			       b.cnickid     nickid,
+			       b.itmoney     tmoney,
+			       b.cgameid     gameid,
+		           b.cperiodid   period,
+		           b.ccodes      codes,
+			       b.imintmoney  mintmoney,
+			       b.iwrate      wrate,
+			       b.cmatchs     matches,
+			       b.cguoguan    guoguan,
+			       b.iusernums usernum,
+			       b.extendtype extendtype,
+			       b.cendtime    endtime
+			  FROM tb_sharelist b
+			 where b.ifinish = 0
+			 and b.cendtime > sysdate + 5/24/60
+	         and b.cvisiable = 1
+	         and  (select nvl(sum(itmoney),0) tmoney from tb_followlist where cshareprojid = b.cprojid) < 10 * b.itmoney
+	         order by b.yhmoney,b.iusernums desc,b.itmoney desc,b.iwrate,b.cendtime desc ,b.cnickid
+
+        ]]>
+    </select>
+
+    <select id="query_god_proj_5" resultType="order.pojo.ShareListPojo">
+                <![CDATA[
+
+			SELECT b.cprojid     projid,
+			       b.cnickid     nickid,
+			       b.itmoney     tmoney,
+			       b.cgameid     gameid,
+		           b.cperiodid   period,
+		           b.ccodes      codes,
+			       b.imintmoney  mintmoney,
+			       b.iwrate      wrate,
+			       b.cmatchs     matches,
+			       b.cguoguan    guoguan,
+			       b.iusernums usernum,
+			       b.extendtype extendtype,
+			       b.cendtime    endtime
+			  FROM tb_sharelist b
+			 where b.ifinish = 0
+			 and b.cendtime > sysdate + 5/24/60
+	         and b.cvisiable = 1
+	         and  (select nvl(sum(itmoney),0) tmoney from tb_followlist where cshareprojid = b.cprojid) < 10 * b.itmoney
+	         order by b.iusernums desc,b.imintmoney,b.itmoney desc,b.iwrate,b.cendtime desc ,b.cnickid
+
+        ]]>
+    </select>
+
+
+</mapper>

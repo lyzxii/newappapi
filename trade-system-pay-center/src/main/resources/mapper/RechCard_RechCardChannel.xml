@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.paycenter.dao.RechCard_RechCardChannelMapper">
+
+	
+	<select id="queryUserChannelVisibleCard" parameterType="pay.bean.PayBean" resultMap="rechCardMap">
+		select card.cbankcode,card.ccardtype,card.csafekey,card.cbankname 
+		from tb_recharge_card card,tb_recharge_card_channel channel 
+		where card.cnickid = #{uid} and card.cstatus = '1' and card.csafekey = channel.csafekey
+		and card.cnickid = channel.cnickid  and cchannel = #{channel} and channel.cuserpayid is not null
+	</select>
+	
+	<resultMap id="rechCardMap" type="pay.pojo.RechCardPojo">
+  		<result property="uid" column="CNICKID"/>
+  		<result property="bankCode" column="CBANKCODE"/>
+  		<result property="bankName" column="CBANKNAME"/>
+  		<result property="cardtype" column="CCARDTYPE"/>
+  		<result property="cardName" column="CCARDNAME"/>
+  		<result property="cardNo" column="CCARDNO"/>
+  		<result property="lastFourCardNum" column="CLASTFOURCARDNO"/>
+  		<result property="bankCode" column="cbankcode"/>
+  		<result property="adddate" column="CADDDATE"/>
+  		<result property="safeKey" column="CSAFEKEY"/>
+  		<result property="status" column="CSTATUS"/>
+  		<result property="authFlag" column="CAUTHENTICATION"/>
+  		<result property="mobileNo" column="CMOBILE"/>
+  		<result property="md5Mobile" column="CMOBILEMD5"/>
+	</resultMap>
+	
+</mapper>

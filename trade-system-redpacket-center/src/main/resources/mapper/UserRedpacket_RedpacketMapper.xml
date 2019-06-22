@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.caiyi.lottery.tradesystem.redpacketcenter.dao.UserRedpacket_RedpacketMapper">
+    <resultMap id="redPacket" type="redpacket.bean.RedPacketBean">
+        <result column="cupacketid" property="cupacketid" jdbcType="VARCHAR"/>
+        <result column="cnickid" property="cnickid" jdbcType="VARCHAR"/>
+        <result column="imoney" property="imoney" jdbcType="VARCHAR"/>
+        <result column="istate" property="istate" jdbcType="INTEGER"/>
+        <result column="crpname" property="crpname" jdbcType="VARCHAR"/>
+        <result column="scale" property="scale" jdbcType="VARCHAR"/>
+        <result column="irmoney" property="irmoney" jdbcType="VARCHAR"/>
+        <result column="cdeaddate" property="cdeaddate" jdbcType="VARCHAR"/>
+        <result column="cdispatchtime" property="cdispatchtime" jdbcType="VARCHAR"/>
+        <result column="crpname" property="crpname" jdbcType="VARCHAR"/>
+        <result column="scale" property="scale" jdbcType="VARCHAR"/>
+        <result column="crpid" property="crpid" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="userRedpacket" type="redpacket.bean.UserRedpacket">
+        <result column="itid" property="tid" jdbcType="INTEGER"/>
+        <result column="crpname" property="redpacketName" jdbcType="VARCHAR"/>
+        <result column="imoney" property="imoney" jdbcType="VARCHAR"/>
+        <result column="irmoney" property="balance" jdbcType="VARCHAR"/>
+        <result column="cdeaddate" property="deaddate" jdbcType="VARCHAR"/>
+        <result column="cupacketid" property="redpacketId" jdbcType="VARCHAR"/>
+        <result column="scale" property="scale" jdbcType="VARCHAR"/>
+        <result column="cgameid" property="gameid" jdbcType="VARCHAR"/>
+        <result column="cagent" property="availableAgent" jdbcType="VARCHAR"/>
+        <result column="isource" property="availableSource" jdbcType="VARCHAR"/>
+        <result column="vipuse" property="vipuse" jdbcType="VARCHAR"/>
+        <result column="crpid" property="rpid" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="userTradeRedpacket" type="redpacket.pojo.Rp_UserRpPojo">
+        <result column="cupacketid" property="redpacketId" jdbcType="VARCHAR"/>
+        <result column="crpid" property="rpid" jdbcType="NUMERIC"/>
+        <result column="imoney" property="imoney" jdbcType="VARCHAR"/>
+        <result column="irmoney" property="balance" jdbcType="VARCHAR"/>
+        <result column="cdeaddate" property="deaddate" jdbcType="VARCHAR"/>
+        <result column="istate" property="state" jdbcType="NUMERIC"/>
+        <result column="scale" property="scale" jdbcType="VARCHAR"/>
+        <result column="cgameid" property="gameid" jdbcType="VARCHAR"/>
+        <result column="cagent" property="availableAgent" jdbcType="VARCHAR"/>
+        <result column="isource" property="availableSource" jdbcType="VARCHAR"/>
+        <result column="itid" property="tid" jdbcType="NUMERIC"/>
+    </resultMap>
+
+    <select id="queryUserTradeRedpacket" parameterType="redpacket.bean.RedPacketBean"
+            resultMap="userTradeRedpacket">
+    	SELECT urp.*,rp.crpname,rp.scale,rp.cgameid,rp.cagent,rp.isource,rp.itid 
+    	  FROM TB_USER_REDPACKET urp ,TB_REDPACKET rp
+		 where urp.istate=1 
+		   and urp.crpid = rp.crpid
+		   and (urp.cdeaddate>sysdate or  urp.cdeaddate is null)
+		   and urp.irmoney>0
+		   and urp.cupacketid= #{cupacketid} and urp.cnickid= #{uid}
+    </select>
+
+    <select id="queryredpacketUseabel" parameterType="String" resultMap="redPacket">
+          select t.cupacketid,t.cnickid,rtrim(to_char(t.imoney, 'fm999999999999990.99'),'.') imoney,t.istate,rtrim(to_char(t.irmoney, 'fm9990.99'),'.') irmoney,
+          to_char(t.cdeaddate,'yyyy-MM-dd HH24:mi:ss') cdeaddate,
+          to_char(t.cdispatchtime,'yyyy-MM-dd HH24:mi:ss') cdispatchtime,
+          v.crpname,v.scale,v.crpid from tb_user_redpacket t,tb_redpacket v where t.crpid = v.crpid and t.cnickid = #{_parameter}
+          and t.istate = 1 order by t.cdeaddate asc ,t.imoney desc
+    </select>
+
+    <select id="queryredpacketUseless" parameterType="String" resultMap="redPacket">
+        select t.cupacketid,t.cnickid,rtrim(to_char(t.imoney, 'fm999999999999990.99'),'.') imoney,t.istate,rtrim(to_char(t.irmoney, 'fm9990.99'),'.') irmoney,
+        to_char(t.cdeaddate,'yyyy-MM-dd HH24:mi:ss') cdeaddate,
+        to_char(t.cdispatchtime,'yyyy-MM-dd HH24:mi:ss') cdispatchtime,
+        v.crpname,v.scale,v.crpid from tb_user_redpacket t,tb_redpacket v where t.crpid = v.crpid and t.cnickid = #{_parameter}
+        and ( t.istate = 2 or t.istate = 3 or t.istate=4) and cdeaddate >= add_months(sysdate,-1) order by t.cdeaddate asc ,t.imoney desc
+    </select>
+
+    <select id="queryredpacketWait" parameterType="String" resultMap="redPacket">
+        select t.cupacketid,t.cnickid,rtrim(to_char(t.imoney, 'fm999999999999990.99'),'.') imoney,t.istate,rtrim(to_char(t.irmoney, 'fm9990.99'),'.') irmoney,
+        to_char(t.cdeaddate,'yyyy-MM-dd HH24:mi:ss') cdeaddate,
+        to_char(t.cdispatchtime,'yyyy-MM-dd HH24:mi:ss') cdispatchtime,
+        v.crpname,v.scale,v.crpid from tb_user_redpacket t,tb_redpacket v where t.crpid = v.crpid and t.cnickid = #{_parameter}
+        and (t.istate = 0 or t.istate=5) order by t.cdispatchtime asc ,t.imoney desc
+    </select>
+
+
+    <select id="query_cast_redpacket" parameterType="redpacket.bean.RedPacketBean"
+            resultMap="userRedpacket">
+       SELECT  urp.cupacketid redpacketId,rtrim(to_char(urp.imoney, 'fm9990.99'),'.') imoney,to_char(urp.cdeaddate,'yyyy-MM-dd HH24:mi:ss') deaddate,
+        rtrim(to_char(urp.irmoney, 'fm9990.99'),'.') balance,rp.cagent,rp.crpname redpacketName,rp.scale,rp.isource,
+        rp.ivipcantuse as vipuse,rp.cagent availableAgent,rp.isource availableSource,rp.cgameid gameid,
+        rp.cmemo as rcmemo,rp.itid tid,rp.crpid FROM TB_USER_REDPACKET urp,TB_REDPACKET rp
+        where 1 = 1 and urp.crpid = rp.crpid and (urp.cdeaddate > sysdate or urp.cdeaddate is null)
+        and urp.irmoney > 0 and urp.cnickid = #{uid} and urp.istate = 1
+        and (instr(rp.cgameid,#{trade_gameid}) &gt;0 or rp.cgameid is null)
+        order by urp.cdeaddate asc
+    </select>
+
+
+    <select id="sendRedPacket" parameterMap="redpacketBean" statementType="CALLABLE">
+        CALL cpadmin.sp_send_redpacket(?,?,?,?,?,?,?,?,?,?,?,?)
+    </select>
+
+    <parameterMap id="redpacketBean" type="redpacket.bean.RedPacketBean">
+        <parameter property="crpid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="cnickid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="cdeaddate" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="imoney" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="coperator" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="igetType" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="icardid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="cmemo" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="dispatchtime" jdbcType="VARCHAR" mode="IN"/>
+
+        <parameter property="busiErrCode" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="busiErrDesc" jdbcType="VARCHAR" mode="OUT"/>
+        <parameter property="cupacketid" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+</mapper>

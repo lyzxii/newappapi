@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.tradecenter.dao.ProjMapper">
+	<select id="countSameProjKm" parameterType="trade.bean.TradeBean" resultType="int">
+        select count(1) 
+        from tb_proj_${gid}
+        where cnickid = #{uid} and cgameid=#{gid} and cperiodid=#{pid} and 
+        	iplay=#{play} and imulity=#{muli} and ifile=#{fflag} and itype=#{type} and 
+        	itmoney=#{money} and cadddate > sysdate-30/24/60/60
+        <if test='codes != null and codes !=""'>
+        	and ccodes = #{codes}
+        </if>
+    </select>
+ 
+ 	<select id="countSameProjZL" parameterType="trade.bean.TradeBean" resultType="int">
+    	select count(1) 
+    	from tb_proj_${gid} 
+    	where cnickid = #{uid} and cgameid=#{gid} and iplay=#{play} and ccodes=#{codes} and 
+    	imulity=#{muli} and ifile=#{fflag} and itype=#{type} and itmoney=#{money} and 
+    	cadddate > sysdate-30/24/60/60
+    </select>
+</mapper>

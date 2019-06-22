@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.ordercenter.dao.VAllProjBuyerAppMapper">
+
+    <select id="queryAllRecord" resultType="order.bean.AllRecordBean" >
+          <![CDATA[
+                select CGAMEID gid,CPERIODID pid,CPROJID projid ,IBMONEY buyMoney,CBUYDATE buydate,IBUYID buyid,
+                ICANCEL cancelFlag,IAWARD awardFlag,IRETURN returnFlag,decode(ipay,0,iamoney,irmoney) awardMoney,IJIESUAN jiesuan,TY ty,istate buyState,icast castFlag,decode(sign(cendtime-sysdate),-1,'1','0') endFlag,
+                decode(ipay,0,decode(sign(cendtime-sysdate),-1,decode(sign(1-to_number(IAWARD)),-1,decode(sign(0-to_number(IAMONEY)),-1,'已中奖','未中奖'),'已过投注时间'),'等待支付'),(decode(ipay,2,'退款中',decode(ipay,3,'已退款',decode(ICANCEL,0,decode(sign(1-to_number(IRETURN)),-1,decode(sign(0-to_number(IRMONEY)),-1,'已中奖','未中奖'),'未结算'),
+                            decode(ICANCEL,1,'本人撤单','系统撤单')))))) as stateDesc  ,ijindu jindu,cendtime endtime,iszh,ipnums pnum,izhflag zhflag,ifinish finishFlag,isuccess successFlag,ifailure failureFlag,ireason reason,icasts casts,zhtype from v_all_proj_buyer_app
+                where cbuydate >= to_date(#{stime},'yyyy-mm-dd') and cbuydate  <= to_date(#{etime},'yyyy-mm-dd')+1 and cnickid = #{uid} ${gidCondition}  order by buydate desc
+            ]]>
+    </select>
+
+</mapper>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.usercenter.dao.CpUserMapper">
+
+    <!--绑定验证-->
+    <select id="allyRegister" parameterMap="allyRegistermsgMap" statementType="CALLABLE">
+        CALL cpuser_new.sp_user_allyregister(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    </select>
+
+    <parameterMap id="allyRegistermsgMap" type="bean.AlipayLoginBean">
+        <parameter property="isNew" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="aliypayid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="type" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="usertype" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="uid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="pwd" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="comeFrom" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="ipAddr" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="mailAddr" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="mobileNo" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="host" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="userId" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="hztype" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="cuserId" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="partner" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="source" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="imei" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="privateKey" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="md5Mobile" jdbcType="VARCHAR" mode="IN"/>
+
+        <parameter property="busiErrCode" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="busiErrDesc" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+
+
+    <!--绑定验证-->
+    <select id="userBindCheck" parameterMap="userBindCheckMap" statementType="CALLABLE">
+        CALL cpuser_new.sp_user_bind_yz(?,?,?,?,?)
+    </select>
+
+    <parameterMap id="userBindCheckMap" type="pojo.CpUserPojo">
+        <parameter property="uid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="flag" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="verificationCode" jdbcType="VARCHAR" mode="IN"/>
+
+        <parameter property="busiErrCode" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="busiErrDesc" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+
+
+    <!--绑定验证-->
+    <!--废弃-->
+    <select id="userSendMsg" parameterMap="usersendmsgMap" statementType="CALLABLE">
+        CALL cpuser.sp_user_mobregister_send_yzm(?,?,?,?,?,?,?)
+    </select>
+
+    <parameterMap id="usersendmsgMap" type="pojo.CpUserPojo">
+        <parameter property="mobileNo" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="yzm" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="flag" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="ipAddr" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="source" jdbcType="VARCHAR" mode="IN"/>
+
+        <parameter property="temporaryId" jdbcType="VARCHAR" mode="OUT"/>
+        <parameter property="busiErrCode" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="busiErrDesc" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+	
+	
+	<!-- 发送验证码 -->
+    <!--废弃-->
+	<select id="userSendMobSms" parameterMap="userSendMobSmsMap" statementType="CALLABLE">
+		CALL cpuser.sp_user_getpwd(?,?,?,?,?,?,?,?)
+	</select>
+		   	
+	<parameterMap id="userSendMobSmsMap" type="bean.UserBean">
+        <parameter property="uid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="flag" jdbcType="INTEGER" mode="IN"/>
+        <parameter property="newValue" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="yzm" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="mailAddr" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="comeFrom" jdbcType="VARCHAR" mode="IN"/>
+
+        <parameter property="busiErrCode" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="busiErrDesc" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+	
+	<!-- 验证短信验证码重置密码 -->
+    <!--废弃-->
+	<select id="forgetPwdVerifyYzm" parameterMap="userGetPwdyzMap" statementType="CALLABLE">
+		call cpuser.sp_user_getpwd_yz(?,?,?,?,?,?)
+	</select>
+	
+	<!-- 用户忘记密码信息验证 -->
+	<parameterMap type="bean.UserBean" id="userGetPwdyzMap">
+		<parameter property="uid" mode="IN" jdbcType="VARCHAR"/>
+		<parameter property="flag" mode="IN" jdbcType="INTEGER"/>
+		<parameter property="newValue" mode="IN" jdbcType="VARCHAR"/>
+		<parameter property="yzm" mode="IN" jdbcType="VARCHAR"/>
+		<parameter property="busiErrCode" mode="OUT" jdbcType="INTEGER"/>
+		<parameter property="busiErrDesc" mode="OUT" jdbcType="VARCHAR"/>
+	</parameterMap>
+
+    <!--微信用户登录-->
+    <select id="wechatLogin" parameterMap="wechatLoginMap" statementType="CALLABLE">
+        CALL cpuser.sp_user_wxlogin(?,?,?,?,?,?,?,?)
+    </select>
+
+    <parameterMap id="wechatLoginMap" type="pojo.CpUserPojo">
+        <parameter property="openid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="unionid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="uid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="ipAddr" jdbcType="VARCHAR" mode="IN"/>
+
+        <parameter property="busiErrCode" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="busiErrDesc" jdbcType="VARCHAR" mode="OUT"/>
+        <parameter property="uid" jdbcType="VARCHAR" mode="OUT"/>
+        <parameter property="pwd" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+
+    <!--用户注册-->
+    <select id="cpuserRegister" parameterMap="cpuserBindCheckMap" statementType="CALLABLE">
+        CALL cpuser_new.sp_user_register(?,?,?,?,?,?,?,?,?,?,?,?,?)
+    </select>
+    <parameterMap id="cpuserBindCheckMap" type="pojo.UserPojo">
+        <parameter property="uid" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="pwd" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="mobileNo" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="mailAddr" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="comeFrom" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="ipAddr" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="cuserId" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="source" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="imei" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="privateKey" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="mobileMd5" mode="IN" jdbcType="VARCHAR"/>
+
+        <parameter property="busiErrCode" mode="OUT" jdbcType="INTEGER"/>
+        <parameter property="busiErrDesc" mode="OUT" jdbcType="VARCHAR"/>
+    </parameterMap>
+
+</mapper>

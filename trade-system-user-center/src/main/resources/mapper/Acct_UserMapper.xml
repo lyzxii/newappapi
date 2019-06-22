@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.usercenter.dao.Acct_UserMapper">
+
+    <select id="queryMlotteryData" resultType="pojo.Acct_UserPojo">
+    	select  a.cnickid  "uid",
+    			a.cagentid agentid,
+    			a.imobbind mobbindFlag,
+    			a.isvip isvip,
+    			a.crealname realName,
+    			a.cidcard idcard,
+    			a.cmobileno mobileNo,
+    			a.cbankcard drawBankCard,
+    			a.iopen whitegrade, 
+    			a.cuserphoto userImg,
+    			b.ibalance balance,
+    			b.ipacketmoney redpacket,
+    			b.ipoint   userpoint
+        from tb_user a, tb_user_acct b 
+        where a.cnickid =  #{uid} and
+              a.cnickid = b.cnickid
+    </select>
+</mapper>

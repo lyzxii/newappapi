@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.usercenter.dao.Agent_UserMapper">
+
+    <select id="getAgentByIdCardAndNidcidWithIsAgent" resultType="pojo.Agent_UserPojo">
+		select *
+		from (select a.cagentid   as agentId,
+		a.cagentdate as agentDate,
+		b.cparentid  as parentId,
+		b.isdaili    as isAgent
+		from (select t.cagentid, t.cagentdate
+		from tb_user t
+		where t.cnickid !=#{nickid} and t.cidcardmd5=#{idCardMD5}
+		and nvl((select level + 1
+		from tb_agent
+		where cparentid = 'vip'
+		connect by cagentid = prior cparentid
+		start with cagentid = t.cagentid),
+		-1) > 0) a
+		left join tb_agent b
+		on a.cagentid = b.cagentid
+		where b.isdaili = '1'
+		or b.teamid > 0
+		order by a.cagentdate desc)
+		where rownum &lt; 2
+    </select>
+
+	<select id="getAgentByIdCardAndNidcid" resultType="pojo.Agent_UserPojo">
+		select *
+		from (select a.cagentid   as agentId,
+		a.cagentdate as agentDate,
+		b.cparentid  as parentId,
+		b.isdaili    as isAgent
+		from (select t.cagentid, t.cagentdate
+		from tb_user t
+		where  t.cnickid !=#{nickid} and t.cidcardmd5=#{idCardMD5}
+		and nvl((select level + 1
+		from tb_agent
+		where cparentid = 'vip'
+		connect by cagentid = prior cparentid
+		start with cagentid = t.cagentid),
+		-1) > 0) a
+		left join tb_agent b
+		on a.cagentid = b.cagentid
+		order by a.cagentdate desc)
+		where rownum &lt; 2
+	</select>
+
+	<select id="getAgentByIdCardAndNickidWithNormal" resultType="pojo.Agent_UserPojo">
+		select *
+		from (select a.cagentid   as agentId,
+		a.cagentdate as agentDate,
+		b.cparentid  as parentId,
+		b.isdaili    as isAgent
+		from (select t.cagentid, t.cagentdate
+		from tb_user t
+		where  t.cnickid !=#{nickid} and t.cidcardmd5=#{idCardMD5}
+		and nvl((select bs.sss
+		from (select level sss, cagentid
+		from tb_agent
+		connect by cparentid = prior cagentid
+		start with cagentid = 'normal') bs
+		where bs.cagentid = t.cagentid
+		and bs.cagentid != 'alipay'),
+		-1) > 0) a
+		left join tb_agent b
+		on a.cagentid = b.cagentid
+		order by a.cagentdate desc)
+		where rownum &lt; 2
+	</select>
+
+	<select id="getAgentByMobilenoAndNickidWidthIsAgent" resultType="pojo.Agent_UserPojo">
+		select *
+		from (select a.cagentid   as agentId,
+		a.cagentdate as agentDate,
+		b.cparentid  as parentId,
+		b.isdaili    as isAgent
+		from (select t.cagentid, t.cagentdate
+		from tb_user t
+		where  t.cnickid !=#{nickid} and t.cmobilenomd5=#{mobilenoMD5}
+		and imobbind = 1
+		and nvl((select level + 1
+		from tb_agent
+		where cparentid = 'vip'
+		connect by cagentid = prior cparentid
+		start with cagentid = t.cagentid),
+		-1) > 0) a
+		left join tb_agent b
+		on a.cagentid = b.cagentid
+		where b.isdaili = '1'
+		or b.teamid > 0
+		order by a.cagentdate desc)
+		where rownum &lt; 2
+	</select>
+
+	<select id="getAgentByMobilenoAndNickid" resultType="pojo.Agent_UserPojo">
+		select *
+		from (select a.cagentid   as agentId,
+		a.cagentdate as agentDate,
+		b.cparentid  as parentId,
+		b.isdaili    as isAgent
+		from (select t.cagentid, t.cagentdate
+		from tb_user t
+		where  t.cnickid !=#{nickid} and t.cmobilenomd5=#{mobilenoMD5}
+		and imobbind = 1
+		and nvl((select level + 1
+		from tb_agent
+		where cparentid = 'vip'
+		connect by cagentid = prior cparentid
+		start with cagentid = t.cagentid),
+		-1) > 0) a
+		left join tb_agent b
+		on a.cagentid = b.cagentid
+		order by a.cagentdate desc)
+		where rownum &lt; 2
+	</select>
+
+	<select id="getAgentByMobilenoAndNickidWithNormal" resultType="pojo.Agent_UserPojo">
+		select *
+		from (select a.cagentid   as agentId,
+		a.cagentdate as agentDate,
+		b.cparentid  as parentId,
+		b.isdaili    as isAgent
+		from (select t.cagentid, t.cagentdate
+		from tb_user t
+		where  t.cnickid !=#{nickid} and t.cmobilenomd5=#{mobilenoMD5}
+		and nvl((select bs.sss
+		from (select level sss, cagentid
+		from tb_agent
+		connect by cparentid = prior cagentid
+		start with cagentid = 'normal') bs
+		where bs.cagentid = t.cagentid
+		and bs.cagentid != 'alipay'),
+		-1) > 0) a
+		left join tb_agent b
+		on a.cagentid = b.cagentid
+		order by a.cagentdate desc)
+		where rownum &lt; 2
+	</select>
+</mapper>

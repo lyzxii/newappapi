@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <sites>
+    	<site host="titan.9188.com" regfrom="titan" name="体坛网" adddate="2011-06-21"/>
+    	<site host="cp.titan24.com" regfrom="titan" name="体坛网" adddate="2011-07-21"/>
+    	<site host="9188.ccb365.com" regfrom="bank" name="唯致动力" adddate="2012-04-25"/>
+    	<site host="caipiao.guilinlife.com" regfrom="guilinlife" name="桂林生活网" adddate="2012-05-17"/>
+    	<site host="baixing.9188.com" regfrom="baixing" name="百姓网" adddate="2011-07-13"/>
+    	<site host="0574.9188.com" regfrom="0574" name="宁波网吧" adddate="2011-11-13"/>
+    	<site host="cp.duba.com" regfrom="duba" name="金山毒霸" adddate="2012-09-19"/>
+    	<site host="cp.duba.net" regfrom="duba" name="金山毒霸" adddate="2012-09-26"/>
+    	<site host="alipay.9188.com" regfrom="alipay" name="生活助手" adddate="2012-11-23"/>
+		<site host="lotterymap.titan24.com" regfrom="lotterymap" name="体坛走势图" adddate="2013-02-04"/>
+		<site host="cp.yyshw.cn" regfrom="yyshw" name="岳阳生活网" adddate="2013-03-20"/>
+		<site host="jbwl.9188.com" regfrom="jbwl" name="上海捷贝网络" adddate="2013-03-20"/>
+		<site host="pps.9188.com" regfrom="pps" name="PPS网络电视" adddate="2013-04-16"/>
+		<site host="esaipay.9188.com" regfrom="esaipay" name="易赛网络" adddate="2013-05-24"/>
+		<site host="huaji.9188.com" regfrom="huajicp" name="花集网" adddate="2013-05-31"/>
+		<site host="cp.jcbao.com" regfrom="jcbao" name="竞彩报" adddate="2013-06-21"/>
+		<site host="37zone.9188.com" regfrom="pipi8" name="皮皮吧" adddate="2013-07-11"/>
+		<site host="10jqka.9188.com" regfrom="0033com" name="同花顺" adddate="2013-07-11"/>
+		<site host="cp.ballpure.com" regfrom="ballpure" name="爆棚" adddate="2013-07-29"/>
+		<site host="baicheng.9188.com" regfrom="baicheng" name="佰诚电子" adddate="2013-08-07"/>
+		<site host="cp.voc.com.cn" regfrom="voc" name="华声在线" adddate="2013-08-07"/>
+		<site host="ygpay.9188.com" regfrom="ygpay" name="盐城光彩" adddate="2013-08-14"/>
+		<site host="www.jiangleduo.com" regfrom="jiangleduo" name="北京申明" adddate="2013-08-14"/>
+    </sites>
+</config>

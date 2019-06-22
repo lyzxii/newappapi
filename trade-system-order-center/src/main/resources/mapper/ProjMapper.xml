@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.ordercenter.dao.ProjMapper">
+
+    <select id="queryPinfo" resultType="order.pojo.QueryProjPojo">
+        select cprojid projid,cnickid cnickid,cgameid gameid,userid cuserid,
+		cperiodid periodid,cname cname,cdesc cdesc,ccodes ,imulity mulity,iplay play,itype itype,ifile ifile,itmoney tmoney,ismoney smoney,inums nums,
+		ionum onum,ipnum pnum,ilnum lnum,iopen iopen,iwrate wrate,ijindu jindu,iviews views,cendtime endtime,cadddate adddate,cmydate mydate,
+		istate istate,iupload upload,cloaddate loaddate,iclear iclear,ccleardate clearedate,icast icast,ccastdate castdate,ibingo bingo,cbgdate bgdate,
+		cwininfo wininfo,iaward award,cawarddate awarddate,ibonus bonus,itax tax,iowins owins,ioreturn oreturn,coretdate oretdate,ireturn ireturn,
+		cretdate retdate,izhanji zhanji,iaunum aunum,iagnum agnum,igaunum gaunum,igagnum gagnum,decode(extendtype,6,6,7,7,8,8,9,9,11,11,13,13,12,12,isource) source,caddmoney addmoney,ipay ipay,ipaydate paydate,
+		irpmoney,irprgmoney,imoneyrange,extendtype
+  		from tb_proj_${gid}
+  		where cprojid = #{hid}
+    </select>
+
+    <select id="queryProjectinfo" resultType="order.pojo.QueryProjAppPojo">
+		select cprojid hid,itype type,icast cast,cperiodid pid,cnickid,imulity mulity,cgameid gid,ismoney money,ilnum lnum,ipnum pnum, iaunum aunum,cname,inums nums,
+             ijindu jindu,iviews views,cendtime endtime,iorder, cdesc ,ccodes ,iplay,cendtime etime,cadddate btime,to_char(ccastdate,'MM-dd HH24:mi:ss') ctime,ifile,itmoney tmoney,IBONUS rmoney,itax tax,iaward award,cawarddate awarddate,ireturn,
+             cretdate retdate,cwininfo wininfo,iowins owins,iopen ,iwrate wrate, istate istate,ijiesuan jiesuan,irpmoney rpmoney,irprgmoney rprgmoney,caddmoney addmoney,decode(extendtype,6,6,7,7,8,8,9,9,11,11,13,13,12,12,14,14,15,15,isource) source,imoneyrange
+             ,cmatchs,cguoguan,decode(sign(cendtime-sysdate),-1,0,decode(istate,-1,1,0)) ipay,nvl(iupay,0) upay
+		<if test="gid=='50'">
+			,ilsmoney lsmoney,ilsaward lsaward
+		</if>
+
+        from tb_proj_${gid}
+  		where cprojid = #{hid}
+	</select>
+
+</mapper>

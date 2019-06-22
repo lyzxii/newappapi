@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.caiyi.lottery.trade.system</groupId>
+		<artifactId>trade-system-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../trade-system-parent/pom.xml</relativePath>
+	</parent>
+	<artifactId>trade-system-trade-pojo</artifactId>
+	<name>trade-system-trade-pojo</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.caiyi.lottery.trade.system</groupId>
+			<artifactId>trade-system-pojo</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.caiyi.lottery.trade.system</groupId>
+			<artifactId>trade-system-util</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+        <dependency>
+            <groupId>com.caiyi</groupId>
+            <artifactId>util</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+    </dependencies>
+</project>

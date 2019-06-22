@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.paycenter.dao.RechargeWayMapper">
+
+	<select id="queryRechWayByPK" parameterType="pay.bean.PayBean" resultMap="RechWayMap">
+		select * from tb_recharge_way where cchannel = #{channel} and cproduct = #{product} and ckey= #{key}
+	</select>
+	
+	<select id="queryOpenRechWayByCategory" parameterType="String" resultMap="RechWayMap">
+		select * from tb_recharge_way where ccategory = #{category} and copenflag = '1' order by iorder desc
+	</select>
+	
+	<resultMap id="RechWayMap" type="pay.pojo.RechargeWayPojo">
+  		<result property="channel" column="CCHANNEL"/>
+  		<result property="product" column="CPRODUCT"/>
+  		<result property="key" column="CKEY"/>
+  		<result property="minlimit" column="CMINLIMIT"/>
+  		<result property="maxlimit" column="CMAXLIMIT"/>
+  		<result property="daylimit" column="CDAYLIMIT"/>
+  		<result property="openflag" column="COPENFLAG"/>
+  		<result property="bindIdcard" column="CBINDIDCARD"/>
+  		<result property="category" column="CCATEGORY"/>
+  		<result property="oredr" column="IORDER"/>
+  		<result property="name" column="CNAME"/>
+	</resultMap>
+	
+</mapper>

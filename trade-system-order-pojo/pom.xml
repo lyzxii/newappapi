@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>trade-system-parent</artifactId>
+        <groupId>com.caiyi.lottery.trade.system</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../trade-system-parent</relativePath>
+    </parent>
+
+    <artifactId>trade-system-order-pojo</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.caiyi.lottery.trade.system</groupId>
+            <artifactId>trade-system-util</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.caiyi.lottery.trade.system</groupId>
+            <artifactId>trade-system-pojo</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.caiyi.lottery.trade.system</groupId>
+            <artifactId>trade-system-redis-center-client</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.caiyi</groupId>
+            <artifactId>util</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+
+</project>

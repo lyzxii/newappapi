@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.paycenter.dao.CpUserPayMapper">
+
+    <!--绑定验证-->
+    <select id="createPayOrder" parameterMap="payOrderMap" statementType="CALLABLE">
+        CALL cpuser.sp_user_addmoney(?,?,?,?,?,?,?,?,?,?)
+    </select>
+
+    <parameterMap id="payOrderMap" type="pay.bean.PayBean">
+        <parameter property="uid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="pwd" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="applyid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="addmoney" jdbcType="NUMERIC" mode="IN"/>
+        <parameter property="minConsume" jdbcType="NUMERIC" mode="IN"/>
+        <parameter property="bankid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="handmoney" jdbcType="NUMERIC" mode="IN"/>
+        <parameter property="remark" jdbcType="VARCHAR" mode="IN"/>
+        
+        <parameter property="busiErrCode" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="busiErrDesc" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+
+    <select id="addmoneysuc" parameterMap="payBean" statementType="CALLABLE">
+        CALL cpuser.sp_user_addmoneysuc(?,?,?,?,?,?)
+    </select>
+
+    <parameterMap id="payBean" type="pay.bean.PayBean">
+        <parameter property="applyid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="addmoney" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="bankid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="dealid" jdbcType="INTEGER" mode="IN"/>
+
+        <parameter property="busiErrCode" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="busiErrDesc" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+
+    <select id="agentTransfer" parameterMap="baseBeanMap" statementType="CALLABLE">
+        CALL cpuser.sp_user_transfer(?,?,?)
+    </select>
+
+    <parameterMap id="baseBeanMap" type="com.caiyi.lottery.tradesystem.BaseBean">
+        <parameter property="uid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="busiErrCode" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="busiErrDesc" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.usercenter.dao.UserChargeMapper">
+
+    <resultMap id="BaseResultMap" type="pojo.UserChargePojo">
+        <id column="ICHARGEID" jdbcType="INTEGER" property="chargeId" />
+        <result column="CNICKID" jdbcType="VARCHAR" property="uid" />
+        <result column="IMONEY" jdbcType="DOUBLE" property="money" />
+        <result column="ITYPE" jdbcType="INTEGER" property="type" />
+        <result column="CMEMO" jdbcType="VARCHAR" property="memo" />
+        <result column="CADDDATE" jdbcType="TIMESTAMP" property="tradeTime" />
+        <result column="IBIZTYPE" jdbcType="INTEGER" property="tradeType" />
+        <result column="IOLDMONEY" jdbcType="DOUBLE" property="oldMoney" />
+        <result column="IBALANCE" jdbcType="DOUBLE" property="balance" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ICHARGEID, CNICKID, IMONEY, ITYPE, CMEMO, CADDDATE, IBIZTYPE, IOLDMONEY, IBALANCE
+    </sql>
+
+    <select id="getChargeByNickidAndDate" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM tb_user_charge
+        where cnickid = #{uid} and cadddate >= to_date(#{stime},'yyyy-mm-dd') and
+        cadddate &lt;= to_date(#{etime},'yyyy-mm-dd')+1
+        <if test="flag == 16">
+            and ((ibiztype >= 100 and ibiztype &lt;= 103) or ibiztype=98)
+        </if>
+        <if test="flag == 17">
+            and ((ibiztype >= 201 and ibiztype &lt;= 204)  or  ibiztype = 256)
+        </if>
+        <if test="flag == 37">
+            and ( ibiztype = 257 or  ibiztype = 113)
+        </if>
+        <if test="flag == 38">
+            and ibiztype in ( 210,211,212,213,214,215,219,302,303,304)
+        </if>
+        order by CADDDATE desc
+    </select>
+
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.ordercenter.dao.ComplexMapper">
+
+    <select id="queryChaseNumber" resultType="order.pojo.ComplexPojo" >
+        select ta.CZHID,ta.CPERIODID,decode(tp.ccodes,NULL,ta.CCODES,tp.ccodes) CCODES,ta.AWARDCODE,ta.ICMONEY,ta.CCASTDATE,ta.ISTATE,ta.ISRETURN,ta.CADDDATE,ta.CWININFO,ta.IMULITY,ta.ITAX,ta.IJIESUAN,ta.ZHTYPE,ta.IALLMONEY,ta.IZHFLAG,ta.SELTYPE,ta.REASON,ta.PNUMS,decode(tp.ccodes,NULL,0,9) source ,
+        <if test="gid=='50'">
+        ta.ilsmoney,ta.ilsaward,
+       </if>
+        ta.IDETAILID
+	   from (
+		    select td.CZHID,td.CPERIODID,td.CCODES,td.CAWARDCODE awardcode,td.ICMONEY,td.CCASTDATE,td.ISTATE,td.ISRETURN,td.CADDDATE,
+	       				td.CWININFO,td.IMULITY,td.ITAX,td.IJIESUAN,td.ZHTYPE,td.IALLMONEY,td.IDETAILID,
+
+        <if test="gid=='50'">
+            td.ilsmoney,td.ilsaward,
+        </if>
+        th.IZHFLAG ,th.seltype,th.IREASON reason,th.IPNUMS pnums
+	     		 from tb_zh_detail_${gid} td ,tb_zhuihao_${gid} th   where th.czhid=td.czhid
+	      				and td.czhid = #{hid}
+        <choose>
+            <when test="isdone==true">
+                and td.istate &lt;&gt; 0
+            </when>
+            <otherwise>
+                and td.istate = 0
+            </otherwise>
+        </choose>
+
+       ) ta left join tb_proj_xzjz tp on tp.cprojid = #{hid} and tp.cgameid = #{gid}
+      union
+        select ta.CZHID,ta.CPERIODID,decode(tp.ccodes,NULL,ta.CCODES,tp.ccodes) CCODES,ta.AWARDCODE,ta.ICMONEY,ta.CCASTDATE,ta.ISTATE,ta.ISRETURN,ta.CADDDATE,ta.CWININFO,ta.IMULITY,ta.ITAX,ta.IJIESUAN,ta.ZHTYPE,ta.IALLMONEY,ta.IZHFLAG,ta.SELTYPE,ta.REASON,ta.PNUMS,decode(tp.ccodes,NULL,0,9) source,
+        <if test="gid=='50'">
+            ta.ilsmoney,ta.ilsaward,
+        </if>
+        ta.IDETAILID
+	   from (
+	       select  * from (
+		       select td.CZHID,td.CPERIODID,td.CCODES,td.CAWARDCODE awardcode,td.ICMONEY,td.CCASTDATE,td.ISTATE,td.ISRETURN,td.CADDDATE,
+		              td.CWININFO,td.IMULITY,td.ITAX,td.IJIESUAN,td.ZHTYPE,td.IALLMONEY,td.IDETAILID,
+        <if test="gid=='50'">
+            td.ilsmoney,td.ilsaward,
+        </if>
+        th.IZHFLAG,th.seltype,th.IREASON reason,th.IPNUMS pnums
+					from tb_zh_detail_${gid} td ,tb_zhuihao_${gid} th
+						where th.czhid=td.czhid and td.czhid = #{hid}
+							and  not exists(select * from tb_zh_detail_${gid} where czhid = #{hid}
+        <choose>
+            <when test="isdone==true">
+                and istate &lt;&gt; 0
+            </when>
+            <otherwise>
+                and istate = 0
+            </otherwise>
+        </choose>
+        )order by td.cperiodid asc
+	       ) temp where rownum = 1
+	    ) ta left join tb_proj_xzjz tp on tp.cprojid = #{hid} and tp.cgameid = #{gid}
+	   order by cperiodid desc
+	
+    </select>
+
+
+    <select id="queryChaseNumberTitile" resultType="order.pojo.ComplexPojo" >
+        <![CDATA[
+	 select * from (
+	   select ta.CZHID,ta.CPERIODID,decode(tp.ccodes,NULL,ta.CCODES,tp.ccodes) CCODES,ta.AWARDCODE,ta.ICMONEY,ta.CCASTDATE,ta.ISTATE,ta.ISRETURN,ta.CADDDATE,ta.CWININFO,ta.IMULITY,ta.ITAX,ta.IJIESUAN,ta.ZHTYPE,ta.IALLMONEY,ta.IZHFLAG,ta.SELTYPE,ta.REASON,ta.PNUMS,decode(tp.ccodes,NULL,0,9) source from (
+		    select td.CZHID,td.CPERIODID,td.CCODES,td.CAWARDCODE awardcode,td.ICMONEY,td.CCASTDATE,td.ISTATE,td.ISRETURN,td.CADDDATE,
+	       				td.CWININFO,td.IMULITY,td.ITAX,td.IJIESUAN,td.ZHTYPE,td.IALLMONEY,th.IZHFLAG,th.seltype,th.IREASON reason,th.IPNUMS pnums
+	     		 from tb_zh_detail_${gid} td ,tb_zhuihao_${gid} th   where th.czhid=td.czhid
+	      				and td.czhid = #{hid} and td.istate = 2
+       ) ta left join tb_proj_xzjz tp on tp.cprojid = #{hid} and tp.cgameid = #{gid}
+
+      union
+
+       select ta.CZHID,ta.CPERIODID,decode(tp.ccodes,NULL,ta.CCODES,tp.ccodes) CCODES,ta.AWARDCODE,ta.ICMONEY,ta.CCASTDATE,ta.ISTATE,ta.ISRETURN,ta.CADDDATE,ta.CWININFO,ta.IMULITY,ta.ITAX,ta.IJIESUAN,ta.ZHTYPE,ta.IALLMONEY,ta.IZHFLAG,ta.SELTYPE,ta.REASON,ta.PNUMS,decode(tp.ccodes,NULL,0,9) source from (
+	       select  * from (
+		       select td.CZHID,td.CPERIODID,td.CCODES,td.CAWARDCODE awardcode,td.ICMONEY,td.CCASTDATE,td.ISTATE,td.ISRETURN,td.CADDDATE,
+		              td.CWININFO,td.IMULITY,td.ITAX,td.IJIESUAN,td.ZHTYPE,td.IALLMONEY,th.IZHFLAG,th.seltype,th.IREASON reason,th.IPNUMS pnums
+					from tb_zh_detail_${gid} td ,tb_zhuihao_${gid} th
+						where th.czhid=td.czhid and td.czhid = #{hid}
+							and  not exists(select * from tb_zh_detail_${gid} where czhid = #{hid} and istate=2 )
+		               order by td.cperiodid asc
+	       ) temp where rownum = 1
+	    ) ta left join tb_proj_xzjz tp on tp.cprojid = #{hid} and tp.cgameid = #{gid}
+	   order by cperiodid desc
+	 ) where rownum =1
+	]]>
+    </select>
+
+</mapper>

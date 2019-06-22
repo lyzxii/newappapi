@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.ordercenter.dao.Proj_ProjBuyMapper">
+
+    <select id="queryBuyByLotid" resultType="order.bean.BetRecordBean" >
+        <![CDATA[
+		   select cgameid gid,cperiodid pid,cprojid projid,ibmoney buyMoney,cbuydate buydate,
+		          ibuyid buyid,icancel cancelFlag,iaward awardFlag,ireturn returnFlag,decode(ipay,0,iamoney,irmoney) awardMoney,
+		          ijiesuan jiesuan,TY ty,istate buyState,icast castFlag,decode(sign(cendtime-sysdate),-1,'1','0') endFlag,
+	              decode(ipay,0,decode(sign(cendtime-sysdate),-1,decode(sign(1-to_number(IAWARD)),-1,
+	              decode(sign(0-to_number(IAMONEY)),-1,'已中奖','未中奖'),'已过投注时间'),'等待支付'),
+	              (decode(ipay,2,'退款中',decode(ipay,3,'已退款',decode(ICANCEL,0,decode(sign(1-to_number(IRETURN)),-1,
+	              decode(sign(0-to_number(IRMONEY)),-1,'已中奖','未中奖'),'未结算'),
+                  decode(ICANCEL,1,'本人撤单','系统撤单')))))) as stateDesc  ,ijindu jindu,cendtime endtime
+           from v_proj_buyer_app
+	       where cbuydate >= to_date(#{stime},'yyyy-mm-dd') and cbuydate  <= to_date(#{etime},'yyyy-mm-dd')+1 and cnickid = #{uid} ${gidCondition}
+		]]>
+        <if test="aid != null and aid != ''">
+            and iamoney > #{aid}
+        </if>
+        <if test="rid != null and rid != ''">
+            and #{rid} > ireturn and icancel=0
+        </if>
+        <if test="newValue != null and newValue != ''">
+            and instr(cprojid,#{newValue}) > 0
+        </if>
+        <if test="tid != null and tid != ''">
+            and iaward > #{tid}
+        </if>
+            and 1 = 1 order by buydate desc
+    </select>
+
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.paycenter.dao.UserCashMapper">
+
+    <!--用户提现-->
+    <select id="userDrawMoney" parameterMap="userDrawMoneyMap" statementType="CALLABLE">
+        CALL cpuser.sp_user_drawmoney(?,?,?,?,?,?,?,?,?,?)
+    </select>
+
+    <parameterMap id="userDrawMoneyMap" type="java.util.HashMap">
+        <parameter property="uid" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="pwd" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="realName" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="tkMoney" jdbcType="NUMERIC" mode="IN"/>
+        <parameter property="tkType" jdbcType="NUMERIC" mode="IN"/>
+        <parameter property="handmoney" jdbcType="NUMERIC" mode="IN"/>
+        <parameter property="applydate" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="busiErrCode" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="busiErrDesc" jdbcType="VARCHAR" mode="OUT"/>
+        <parameter property="applyid" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+
+</mapper>

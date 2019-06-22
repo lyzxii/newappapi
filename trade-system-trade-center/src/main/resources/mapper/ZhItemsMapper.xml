@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.tradecenter.dao.ZhItemsMapper">
+
+    <select id="queryZhByZhId" resultType="trade.pojo.ZhRecordPojo">
+      select CZHID,CPERIODID,
+              CCODES,ICMONEY,
+              CCASTDATE,ISTATE,
+              CADDDATE,CWININFO,
+              CBGDATE,IBINGO,
+              IMULITY,CAWARDDATE,
+              IAWARD,IAMONEY,
+              ISRETURN,CRETURNDATE,
+              decode(ISTATE,2,IRMONEY,0) IRMONEY,ITAX,
+              CNICKID,IJIESUAN,
+              CJSDATE,IUMONEY,
+              IZHANJI,IGAUNUM,
+              IGAGNUM,CAWARDCODE,
+              CADDMONEY,IPAY,
+              IPAYDATE IPAYRETURNDATE,IPAYNO,
+              IDETAILID,ZHTYPE,
+              ISFANDIAN,IHIDE,
+              CHIDEDATE
+        from tb_zh_detail_${gid}
+        where (zhtype=0 or zhtype=1 or zhtype = 4) and czhid = #{tid} order by cperiodid
+    </select>
+</mapper>

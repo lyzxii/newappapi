@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caiyi.lottery.tradesystem.ordercenter.dao.VZhuiHaoMapper">
+
+    <select id="queryZhuihaoRecord" resultType="order.bean.ZhuihaoRecordBean" >
+        <![CDATA[
+		select czhid zhuihaoid,cgameid gid,ipnums totalperiod,izhflag zhflag,ifinish finishflag,isuccess successperiod,ifailure failperiod,
+		cadddate adddate,itmoney totalmoney,ireason stopreason,ibonus totalbonus,icasts castmoney,zhtype from v_zhuihao
+		where cnickid = #{uid} and cadddate >= to_date(#{stime},'yyyy-mm-dd') and cadddate <= to_date(#{etime},'yyyy-mm-dd')+1 and ipay>0
+ 	    ]]>
+        <if test="qtype != null and qtype != ''">
+            and ifinish = #{qtype}
+        </if>
+        <if test="newValue != null and newValue != ''">
+            and ibonus > #{newValue}
+        </if>
+            and 1 = 1 order by cadddate desc
+    </select>
+
+</mapper>

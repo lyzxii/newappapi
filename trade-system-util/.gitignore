@@ -1,0 +1,15 @@
+target/
+logs/
+.classpath
+.project
+.metadata/
+.settings/
+.svn/
+classes/
+lib/
+.externalToolBuilders/
+*.iml
+.idea/
+application-test.yml
+bootstrap-test.yml
+logback-test.xml

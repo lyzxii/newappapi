@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd"> -->
+<configuration>
+    <property name="path" value="logs"/>
+
+       <!-- STDOUT -->
+    <appender name="STDOUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${path}/%d{yyyy-MM-dd}/ouput_%i.log
+            </FileNamePattern>
+            <maxHistory>365</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!--文件达到 最大128MB时会被切割 -->
+                <maxFileSize>128 MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+ 
+        <encoder>
+            <pattern>%date [%thread] %-5level %logger{0} [%file:%line] %X{ip} %X{sysCode} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="cachetask" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${path}/%d{yyyy-MM-dd}/cachetask_%i.log
+            </FileNamePattern>
+            <maxHistory>365</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!--文件达到 最大128MB时会被切割 -->
+                <maxFileSize>128 MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date [%thread] %-5level %logger{0} [%file:%line] %X{ip} %X{sysCode} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="worldcuphometask" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${path}/%d{yyyy-MM-dd}/worldcuphometask_%i.log
+            </FileNamePattern>
+            <maxHistory>365</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!--文件达到 最大128MB时会被切割 -->
+                <maxFileSize>128 MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date [%thread] %-5level %logger{0} [%file:%line] %X{ip} %X{sysCode} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="topictask" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${path}/%d{yyyy-MM-dd}/topictask_%i.log
+            </FileNamePattern>
+            <maxHistory>365</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!--文件达到 最大128MB时会被切割 -->
+                <maxFileSize>128 MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date [%thread] %-5level %logger{0} [%file:%line] %X{ip} %X{sysCode} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 输出 -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+    <logger name="com.caiyi.lottery.tradesystem.task.CacheTask" level="INFO" additivity="false">
+        <appender-ref ref="cachetask"/>
+    </logger>
+
+    <logger name="com.caiyi.lottery.tradesystem.task.TopicTask" level="INFO" additivity="false">
+        <appender-ref ref="topictask"/>
+    </logger>
+
+    <logger name="com.caiyi.lottery.tradesystem.task.WorldCupHomeTask" level="INFO" additivity="false">
+        <appender-ref ref="worldcuphometask"/>
+    </logger>
+
+</configuration>
