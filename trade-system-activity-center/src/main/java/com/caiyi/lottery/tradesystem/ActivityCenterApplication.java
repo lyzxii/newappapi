@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 public class ActivityCenterApplication {
-
+    //tianjia zhushi
     public static void main(String[] args) {
         SpringApplication.run(ActivityCenterApplication.class, args);
     }
